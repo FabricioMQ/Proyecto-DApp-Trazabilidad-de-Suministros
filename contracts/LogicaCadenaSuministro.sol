@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+//Todas estas interfaces  definen las funciones esperada de cada contrato 
 interface IRegistroProductos {
     function existeProducto(uint idProducto) external view returns (bool);
     function obtenerPoseedor(uint idProducto) external view returns (address);
@@ -29,30 +30,34 @@ contract LogicaCadenaSuministro {
     IRegistroUsuarios public registroUsuarios;
     IGestorPermisos public gestorPermisos;
     IRegistroAuditoria public registroAuditoria;
-
+    // Mapping que guarda el estado de cada producto seria el 1 del producto y si su estado 
     mapping(uint => string) public estadosProducto;
 
+    //eventos para cuando se actualiza el estado de producto ,se transfiere o se crea
     event EstadoProductoActualizado(uint indexed idProducto, string nuevoEstado);
     event ProductoTransferido(uint indexed idProducto, address indexed desde, address indexed hacia);
     event ProductoCreado(uint indexed idProducto, string descripcion, address indexed productor);
 
+    //Esta restriccion es para que solo la persona que tiene permiso en x producto pueda modificarlo 
     modifier soloConPermiso(uint idProducto) {
         require(gestorPermisos.tienePermiso(idProducto, msg.sender), "No tienes permiso para modificar este producto");
         _;
     }
 
+    // El constructor recibe las direcciones de los otros contratos
     constructor(
         address _registroProductos,
         address _registroUsuarios,
         address _gestorPermisos,
         address _registroAuditoria
     ) {
+        //Es esta parte se crea las interfaces en el constructor y se guardan en un tipo de dato de cada interface con el address para vicular
         registroProductos = IRegistroProductos(_registroProductos);
         registroUsuarios = IRegistroUsuarios(_registroUsuarios);
         gestorPermisos = IGestorPermisos(_gestorPermisos);
         registroAuditoria = IRegistroAuditoria(_registroAuditoria);
     }
-
+    //Esta funcion crea el producto  y usa los otros contratos 
     function crearProducto(uint idProducto, string calldata descripcion) external {
         IRegistroUsuarios.TipoUsuario tipo = registroUsuarios.obtenerTipoUsuario(msg.sender);
         require(tipo == IRegistroUsuarios.TipoUsuario.Productor, "Solo productores pueden crear productos");
@@ -64,7 +69,7 @@ contract LogicaCadenaSuministro {
 
         emit ProductoCreado(idProducto, descripcion, msg.sender);
     }
-
+    // Esta funcion acttualiza el estado del producto 
     function actualizarEstadoProducto(uint idProducto, string calldata nuevoEstado) external {
         require(registroProductos.existeProducto(idProducto), "Producto no existe");
 
@@ -80,7 +85,7 @@ contract LogicaCadenaSuministro {
         registroAuditoria.registrarCambioEstado(idProducto, estadoAnterior, nuevoEstado);
         emit EstadoProductoActualizado(idProducto, nuevoEstado);
     }
-
+    //esta funcion es para transferir el producto la logica es de productor a transportitas y este a distribuidor 
     function transferirProducto(uint idProducto, address hacia) external {
         require(registroProductos.existeProducto(idProducto), "Producto no existe");
 

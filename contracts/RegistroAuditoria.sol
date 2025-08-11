@@ -2,17 +2,20 @@
 pragma solidity ^0.8.0;
 
 contract RegistroAuditoria {
-    address public propietario;
+    // Guarda la direccion de quien creo el contrato 
+    address public propietario;  
+    // Guarda la direccion central o contrato que puede ejecutar este contrato , es por segurida
     address public logicaCadenaSuministro;
-
-    event EstadoCambiado(uint idProducto, string estadoAnterior, string nuevoEstado, address quienCambia, uint timestamp);
-    event ProductoMovido(uint idProducto,  address desde, address hacia, uint timestamp);
-
+    //Evento para los cambios de estado de un producto y si cambia de  usuario
+    event EstadoCambiado(uint indexed idProducto, string indexed estadoAnterior, string  nuevoEstado, address  quienCambia, uint indexed timestamp);
+    event ProductoMovido(uint indexed idProducto,  address indexed desde, address  hacia, uint indexed timestamp);
+    
+    // para restringir que las funciones solo el propietario las pueda ejecutar
     modifier soloPropietario() {
         require(msg.sender == propietario, "No eres el propietario");
         _;
     }
-
+     //Para restringir que la logica de cadena en este caso el contrato principal ejecute las funciones nadie mas 
     modifier soloLogicaCadenaSuministro() {
         require(msg.sender == logicaCadenaSuministro, "Solo LogicaCadenaSuministro puede llamar");
         _;
@@ -21,15 +24,15 @@ contract RegistroAuditoria {
     constructor() {
         propietario = msg.sender;
     }
-
+    // esta funcion es para indicar cual es el contrato principal
     function setLogicaCadenaSuministro(address logica) external soloPropietario {
         logicaCadenaSuministro = logica;
     }
-
+    //Esta funcion ejecuta el evento estadocambiado que solo puede la logica puede ejecutarlo
     function registrarCambioEstado(uint idProducto,string calldata estadoAnterior, string calldata nuevoEstado) external soloLogicaCadenaSuministro {
         emit EstadoCambiado(idProducto, estadoAnterior, nuevoEstado, msg.sender, block.timestamp);
     }
-
+    //Esta funcion ejecuta el evento productomovido que solo logica puede ejecutarlo 
     function registrarMovimiento(uint idProducto,address desde, address hacia) external soloLogicaCadenaSuministro {
         emit ProductoMovido(idProducto, desde, hacia, block.timestamp);
     }
