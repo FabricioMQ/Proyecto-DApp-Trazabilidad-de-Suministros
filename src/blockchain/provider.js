@@ -1,7 +1,7 @@
 import { createConfig } from 'wagmi'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { http } from 'viem'
-import"@rainbow-me/rainbowkit/styles.css"
+import'@rainbow-me/rainbowkit/styles.css'
 // Define tu cadena Ganache local
 const ganacheChain = {
   id: 1337,

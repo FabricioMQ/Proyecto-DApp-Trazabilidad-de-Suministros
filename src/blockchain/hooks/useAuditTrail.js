@@ -1,72 +1,80 @@
-import { useState, useEffect, useCallback } from "react";
-import { usePublicClient, useWatchContractEvent  } from "wagmi";
-import { contracts } from "../contracts"; 
+import { useEffect, useState } from 'react';
+import { usePublicClient } from 'wagmi';
+import { watchContractEvent } from '@wagmi/core';
+import { decodeEventLog } from 'viem';
+import { wagmiConfig } from '../provider';
+import { contracts } from '../contracts';
 
-export function useAuditoriaLogs() {
-  const publicClient = usePublicClient();
-  const [logs, setLogs] = useState([]);
+export function useAuditTrail() {
+  const client = usePublicClient();
+  const [estadoLogs, setEstadoLogs] = useState([]);
+  const [movimientoLogs, setMovimientoLogs] = useState([]);
 
-  // Cargar todos los eventos históricos una sola vez
+  const contractAddress = contracts.auditTrail.address;
+  const contractAbi = contracts.auditTrail.data.abi;
+
   useEffect(() => {
-    async function fetchLogs() {
+    async function fetchHistoricalLogs() {
       try {
-        const filterParams = {
-          address: contracts.auditTrail.address,
-          abi: contracts.auditTrail.abi,
-          fromBlock: 0n,
-          toBlock: "latest",
-        };
-
-        const eventosEstado = await publicClient.getLogs({
-          ...filterParams,
-          eventName: "EstadoCambiado",
+        const rawLogs = await client.getLogs({
+          address: contractAddress,
+          fromBlock: 'earliest',
+          toBlock: 'latest',
         });
 
-        const eventosMovimiento = await publicClient.getLogs({
-          ...filterParams,
-          eventName: "ProductoMovido",
-        });
+        const decodedLogs = rawLogs
+          .map(log => {
+            try {
+              const decoded = decodeEventLog({ abi: contractAbi, ...log });
+              return { ...log, ...decoded };
+            } catch {
+              return null;
+            }
+          })
+          .filter(Boolean);
 
-        const allLogs = [...eventosEstado, ...eventosMovimiento].sort(
-          (a, b) => Number(a.blockNumber) - Number(b.blockNumber)
-        );
-
-        setLogs(allLogs);
+        setEstadoLogs(decodedLogs.filter(log => log.eventName === 'EstadoCambiado'));
+        setMovimientoLogs(decodedLogs.filter(log => log.eventName === 'ProductoMovido'));
       } catch (err) {
-        console.error("Error cargando eventos de auditoría:", err);
+        console.error('Error al cargar logs históricos:', err);
       }
     }
 
-    fetchLogs();
-  }, [publicClient]);
+    fetchHistoricalLogs();
+  }, [client, contractAddress, contractAbi]);
 
-  // Escuchar en tiempo real eventos nuevos
-  useWatchContractEvent ({
-    address: contracts.auditTrail.address,
-    abi: contracts.auditTrail.abi,
-    eventName: "EstadoCambiado",
-    listener(log) {
-      setLogs((prev) => [...prev, ...log]);
-    },
-  });
+  useEffect(() => {
+    const unwatchEstado = watchContractEvent(wagmiConfig, {
+      address: contractAddress,
+      abi: contractAbi,
+      eventName: 'EstadoCambiado',
+      onLogs(newLogs) {
+        const decoded = newLogs.map(log => {
+          const d = decodeEventLog({ abi: contractAbi, ...log });
+          return { ...log, ...d };
+        });
+        setEstadoLogs(prev => [...decoded, ...prev]);
+      },
+    });
 
-  useWatchContractEvent ({
-    address: contracts.auditTrail.address,
-    abi: contracts.auditTrail.abi,
-    eventName: "ProductoMovido",
-    listener(log) {
-      setLogs((prev) => [...prev, ...log]);
-    },
-  });
+    const unwatchMovimiento = watchContractEvent(wagmiConfig, {
+      address: contractAddress,
+      abi: contractAbi,
+      eventName: 'ProductoMovido',
+      onLogs(newLogs) {
+        const decoded = newLogs.map(log => {
+          const d = decodeEventLog({ abi: contractAbi, ...log });
+          return { ...log, ...d };
+        });
+        setMovimientoLogs(prev => [...decoded, ...prev]);
+      },
+    });
 
-  // Función para filtrar por producto (idProducto)
-  const filtrarPorProducto = useCallback(
-    (idProducto) => {
-      if (!idProducto) return logs;
-      return logs.filter((l) => l.args?.idProducto === idProducto);
-    },
-    [logs]
-  );
+    return () => {
+      unwatchEstado();
+      unwatchMovimiento();
+    };
+  }, [contractAddress, contractAbi]);
 
-  return { logs, filtrarPorProducto };
+  return { estadoLogs, movimientoLogs };
 }

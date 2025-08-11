@@ -1,8 +1,8 @@
-import UserRegistryAbi from "../abi/RegistroUsuarios.json";
-import ProductRegistryAbi from "../abi/RegistroProductos.json";
-import SupplyChainLogicAbi from "../abi/LogicaCadenaSuministro.json";
-import PermissionManagerAbi from "../abi/GestorPermisos.json";
-import AuditTrailAbi from "../abi/RegistroAuditoria.json";
+import UserRegistryAbi from '../abi/RegistroUsuarios.json';
+import ProductRegistryAbi from '../abi/RegistroProductos.json';
+import SupplyChainLogicAbi from '../abi/LogicaCadenaSuministro.json';
+import PermissionManagerAbi from '../abi/GestorPermisos.json';
+import AuditTrailAbi from '../abi/RegistroAuditoria.json';
 
 export const contracts = {
   userRegistry: {

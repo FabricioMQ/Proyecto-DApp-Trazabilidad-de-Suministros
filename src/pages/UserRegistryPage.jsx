@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Button } from "flowbite-react";
-import { ToastContainer, toast } from "react-toastify";
-import {UserActionModal} from "../components";
-import { useUserRegistry } from "../blockchain/hooks/useUserRegistry";
+import { useState } from 'react';
+import { Button } from 'flowbite-react';
+import { ToastContainer, toast } from 'react-toastify';
+import {UserActionModal} from '../components';
+import { useUserRegistry } from '../blockchain/hooks/useUserRegistry';
 
 export   function UserRegistryPage() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalAction, setModalAction] = useState("Registrar Usuario");
+  const [modalAction, setModalAction] = useState('Registrar Usuario');
 
   const { useRegisterUser, useUpdateUser, useGetUserType } = useUserRegistry();
 
@@ -20,14 +20,14 @@ export   function UserRegistryPage() {
   };
 
   return (
-    <div className="max-w-md p-6 mx-auto mt-10 border rounded-lg shadow-md bg-background border-border">
-      <h2 className="mb-6 text-2xl font-bold text-primary">Menú de Usuario</h2>
+    <div className='max-w-md p-6 mx-auto mt-10 border rounded-lg shadow-md bg-background border-border'>
+      <h2 className='mb-6 text-2xl font-bold text-primary'>Menú de Usuario</h2>
 
-      <div className="flex flex-col gap-4">
+      <div className='flex flex-col gap-4'>
         <Button
-          className="text-white bg-primary hover:bg-primary-hover"
+          className='text-white bg-primary hover:bg-primary-hover'
           onClick={() => {
-            setModalAction("Registrar Usuario");
+            setModalAction('Registrar Usuario');
             setModalOpen(true);
           }}
         >
@@ -35,9 +35,9 @@ export   function UserRegistryPage() {
         </Button>
 
         <Button
-          className="text-white bg-secondary hover:bg-secondary-hover"
+          className='text-white bg-secondary hover:bg-secondary-hover'
           onClick={() => {
-            setModalAction("Actualizar Usuario");
+            setModalAction('Actualizar Usuario');
             setModalOpen(true);
           }}
         >
@@ -45,9 +45,9 @@ export   function UserRegistryPage() {
         </Button>
 
         <Button
-          className="text-white bg-warning hover:bg-warning/80"
+          className='text-white bg-warning hover:bg-warning/80'
           onClick={() => {
-            setModalAction("Ver Tipo de Usuario");
+            setModalAction('Ver Tipo de Usuario');
             setModalOpen(true);
           }}
         >
@@ -65,7 +65,7 @@ export   function UserRegistryPage() {
         useGetUserType={useGetUserType}
       />
 
-      <ToastContainer position="top-right" autoClose={4000} />
+      <ToastContainer position='top-right' autoClose={4000} />
     </div>
   );
 }

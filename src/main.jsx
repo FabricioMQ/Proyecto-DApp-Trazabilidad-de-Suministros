@@ -17,7 +17,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <WagmiProvider config={wagmiConfig} reconnectOnMount={true}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider modalSize="compact" chains={chains}>
+        <RainbowKitProvider modalSize='compact' chains={chains}>
           <RequireWallet>
             <App />
           </RequireWallet>
