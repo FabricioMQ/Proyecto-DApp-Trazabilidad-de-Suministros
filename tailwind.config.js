@@ -21,7 +21,15 @@ module.exports = {
       info: "#3b82f6",              // Azul claro para info y enlaces
       white: "#ffffff",             // Blanco para textos y fondos claros
     },
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'cancel-btn': '#dc2626',        // mismo rojo "error"
+        'cancel-btn-hover': '#b91c1c',  // rojo oscuro para hover
+      },
+      textColor: {
+        'cancel-btn-text': '#ffffff',   // blanco para texto
+      },
+    },
   },
   plugins: [require("flowbite/plugin")],
 };
