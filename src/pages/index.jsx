@@ -1,1 +1,2 @@
-export * from "./UserRegistryPage"
+export * from './UserRegistryPage'
+export * from './AuditTrailPage'

@@ -143,20 +143,20 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
       : 'bg-warning hover:bg-warning/80';
 
   return (
-    <Modal show={isOpen} onClose={onClose} size="md" popup>
+    <Modal show={isOpen} onClose={onClose} size='md' popup>
       <ModalHeader>{action}</ModalHeader>
       <ModalBody>
-        <div className="space-y-6">
+        <div className='space-y-6'>
           <div>
-            <label className="block mb-1 font-medium text-text-primary">
+            <label className='block mb-1 font-medium text-text-primary'>
               Dirección del usuario
             </label>
             <input
-              type="text"
-              placeholder="0x1234..."
+              type='text'
+              placeholder='0x1234...'
               value={userAddress}
               onChange={(e) => setUserAddress(e.target.value)}
-              className="w-full p-2 border rounded border-border bg-background text-text-primary"
+              className='w-full p-2 border rounded border-border bg-background text-text-primary'
               required
               disabled={userTypeResult !== null}
             />
@@ -164,32 +164,32 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
 
           {(action === 'Registrar Usuario' || action === 'Actualizar Usuario') && (
             <div>
-              <label className="block mb-1 font-medium text-text-primary">
+              <label className='block mb-1 font-medium text-text-primary'>
                 Tipo de usuario
               </label>
               <select
                 value={userType}
                 onChange={(e) => setUserType(e.target.value)}
-                className="w-full p-2 border rounded border-border bg-background text-text-primary"
+                className='w-full p-2 border rounded border-border bg-background text-text-primary'
                 required
                 disabled={userTypeResult !== null}
               >
-                <option value="0">Ninguno</option>
-                <option value="1">Producto</option>
-                <option value="2">Transportista</option>
-                <option value="3">Distribuidos</option>
+                <option value='0'>Ninguno</option>
+                <option value='1'>Producto</option>
+                <option value='2'>Transportista</option>
+                <option value='3'>Distribuidos</option>
               </select>
             </div>
           )}
 
           {action === 'Ver Tipo de Usuario' && userTypeResult !== null && (
-            <div className="p-3 mt-4 bg-gray-100 border border-gray-300 rounded">
+            <div className='p-3 mt-4 bg-gray-100 border border-gray-300 rounded'>
               <strong>Tipo de usuario:</strong> {tipoTexto[userTypeResult]}
             </div>
           )}
 
           {(action === 'Registrar Usuario' || action === 'Actualizar Usuario') && localHash && (
-            <div className="p-3 mt-4 text-sm text-blue-800 break-all border border-blue-300 rounded bg-blue-50">
+            <div className='p-3 mt-4 text-sm text-blue-800 break-all border border-blue-300 rounded bg-blue-50'>
               <strong>Hash de transacción:</strong><br />
               {localHash}
             </div>
@@ -198,19 +198,19 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
           {(action === 'Registrar Usuario' || action === 'Actualizar Usuario') && (
             <>
               {localStatus === 'pending' && (
-                <div className="p-3 mt-2 text-yellow-800 border border-yellow-300 rounded bg-yellow-50">
+                <div className='p-3 mt-2 text-yellow-800 border border-yellow-300 rounded bg-yellow-50'>
                   <strong>Estado:</strong> Transacción pendiente de confirmación...
                 </div>
               )}
 
               {localStatus === 'success' && (
-                <div className="p-3 mt-2 text-green-800 border border-green-300 rounded bg-green-50">
+                <div className='p-3 mt-2 text-green-800 border border-green-300 rounded bg-green-50'>
                   <strong>Estado:</strong> Transacción confirmada exitosamente.
                 </div>
               )}
 
               {localStatus === 'error' && (
-                <div className="p-3 mt-2 text-red-800 border border-red-300 rounded bg-red-50">
+                <div className='p-3 mt-2 text-red-800 border border-red-300 rounded bg-red-50'>
                   <strong>Error:</strong> {formatFriendlyError(localError)}
                 </div>
               )}
@@ -227,7 +227,7 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
           {isPending || isConfirming ? 'Procesando...' : 'Ejecutar'}
         </Button>
         <Button
-          className="bg-cancel-btn text-cancel-btn-text hover:bg-cancel-btn-hover"
+          className='bg-cancel-btn text-cancel-btn-text hover:bg-cancel-btn-hover'
           onClick={onClose}
         >
           Cancelar

@@ -7,8 +7,7 @@ import { contracts } from '../contracts';
 export function useProductRegistry() {
   const {
     data: hash,
-    isPending,
-    writeContract,
+    isPending
   } = useWriteContract();
 
   const {

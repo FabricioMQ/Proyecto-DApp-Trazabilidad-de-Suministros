@@ -1,17 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 export  function Navbar() {
-  const baseClasses = "px-3 py-2 rounded-md text-sm font-medium";
-  const activeClasses = "bg-primary text-white"; // color azul vibrante de tu config
-  const inactiveClasses = "text-text-secondary hover:bg-primary-hover hover:text-white"; // texto gris y hover con azul oscuro + blanco texto
+  const baseClasses = 'px-3 py-2 rounded-md text-sm font-medium';
+  const activeClasses = 'bg-primary text-white'; // color azul vibrante de tu config
+  const inactiveClasses = 'text-text-secondary hover:bg-primary-hover hover:text-white'; // texto gris y hover con azul oscuro + blanco texto
 
   return (
-    <nav className="p-4 bg-background"> 
-      <div className="container flex items-center justify-between mx-auto">
-        <div className="text-xl font-bold text-text-primary">DApp Trazabilidad de Suministros</div> 
-        <div className="flex space-x-4">
+    <nav className='p-4 bg-background'> 
+      <div className='container flex items-center justify-between mx-auto'>
+        <div className='text-xl font-bold text-text-primary'>DApp Trazabilidad de Suministros</div> 
+        <div className='flex space-x-4'>
           <NavLink
-            to="/usuario"
+            to='/usuario'
             className={({ isActive }) =>
               `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
@@ -19,7 +19,7 @@ export  function Navbar() {
             Usuario
           </NavLink>
           <NavLink
-            to="/producto"
+            to='/producto'
             className={({ isActive }) =>
               `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
@@ -27,7 +27,7 @@ export  function Navbar() {
             Producto
           </NavLink>
           <NavLink
-            to="/suministro"
+            to='/suministro'
             className={({ isActive }) =>
               `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
@@ -35,7 +35,7 @@ export  function Navbar() {
             Suministro
           </NavLink>
           <NavLink
-            to="/auditoria"
+            to='/auditoria'
             className={({ isActive }) =>
               `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`
             }

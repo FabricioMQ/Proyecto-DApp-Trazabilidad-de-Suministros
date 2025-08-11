@@ -7,8 +7,8 @@ export function RequireWallet({ children }) {
 
   if (!isConnected) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <p className="mb-4 text-lg font-bold">Conecta tu wallet para continuar</p>
+      <div className='flex flex-col items-center justify-center h-screen'>
+        <p className='mb-4 text-lg font-bold'>Conecta tu wallet para continuar</p>
         <ConnectButton />
       </div>
     );

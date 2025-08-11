@@ -1,16 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {Navbar ,Footer} from "./components";
-import { UserRegistryPage } from "./pages"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {Navbar ,Footer} from './components';
+import { UserRegistryPage ,AuditTrailPage } from './pages/index'
 
 export default function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className='flex flex-col min-h-screen'>
         <Navbar />
-        <main className="container flex-grow px-4 py-6 mx-auto">
+        <main className='container flex-grow px-4 py-6 mx-auto'>
           <Routes>
-            <Route path="/usuario" element={<UserRegistryPage />} />
-            <Route path="*" element={<UserRegistryPage />} />
+            <Route path='/auditoria' element={<AuditTrailPage />} />
+            <Route path='/usuario' element={<UserRegistryPage />} />
+            <Route path='*' element={<UserRegistryPage />} />
           </Routes>
         </main>
         <Footer />
