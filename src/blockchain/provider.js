@@ -1,18 +1,16 @@
-import { configureChains, createConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-
-
-
+import { createConfig } from 'wagmi'
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { http } from 'viem'
+import"@rainbow-me/rainbowkit/styles.css"
+// Define tu cadena Ganache local
 const ganacheChain = {
   id: 1337,
-  name: "Ganache Local",
-  network: "ganache",
+  name: 'Ganache Local',
+  network: 'ganache',
   nativeCurrency: {
     decimals: 18,
-    name: "Ethereum",
-    symbol: "ETH",
+    name: 'Ethereum',
+    symbol: 'ETH',
   },
   rpcUrls: {
     default: {
@@ -20,32 +18,28 @@ const ganacheChain = {
     },
   },
   testnet: true,
-};
+}
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [ganacheChain],
-  [
-    jsonRpcProvider({
-      rpc: (chain) => {
-        if (chain.id !== 1337) return null;
-        return { http: import.meta.env.VITE_RPC_URL };
-      },
-    }),
-    publicProvider(),
-  ]
-);
+// Configura las cadenas manualmente (sin configureChains)
+const chains = [ganacheChain]
 
+// Define los transports con Viem
+const transports = {
+  [ganacheChain.id]: http(import.meta.env.VITE_RPC_URL),
+}
+const projectId = 'eefe4c42b8ba945ed80bfdc1c5b1eff9';
+// Conectores (usa getDefaultWallets para RainbowKit)
 const { connectors } = getDefaultWallets({
-  appName: " DApp de Trazabilidad de Suministros",
+  appName: 'DApp de Trazabilidad de Suministros',
+  projectId,
   chains,
-});
+})
 
-export const wagmiConfig = createConfig({
-  autoConnect: true,
+// Crea la configuración Wagmi (v2)
+ const wagmiConfig = createConfig({
   connectors,
-  publicClient,
-  webSocketPublicClient,
-});
+  chains,
+  transports
+})
 
-
-export { RainbowKitProvider, chains ,wagmiConfig};
+export { RainbowKitProvider, chains, wagmiConfig }

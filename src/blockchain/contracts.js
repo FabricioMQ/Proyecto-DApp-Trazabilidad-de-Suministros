@@ -7,22 +7,22 @@ import AuditTrailAbi from "../abi/RegistroAuditoria.json";
 export const contracts = {
   userRegistry: {
     address: import.meta.env.VITE_USER_REGISTRY_ADDRESS,
-    abi: UserRegistryAbi,
+    data: UserRegistryAbi,
   },
   productRegistry: {
     address: import.meta.env.VITE_PRODUCT_REGISTRY_ADDRESS,
-    abi: ProductRegistryAbi,
+    data: ProductRegistryAbi,
   },
   supplyChainLogic: {
     address: import.meta.env.VITE_SUPPLY_CHAIN_LOGIC_ADDRESS,
-    abi: SupplyChainLogicAbi,
+    data: SupplyChainLogicAbi,
   },
   permissionManager: {
     address: import.meta.env.VITE_PERMISSION_MANAGER_ADDRESS,
-    abi: PermissionManagerAbi,
+    data: PermissionManagerAbi,
   },
   auditTrail: {
     address: import.meta.env.VITE_AUDIT_TRAIL_ADDRESS,
-    abi: AuditTrailAbi,
+    data: AuditTrailAbi,
   },
 };
