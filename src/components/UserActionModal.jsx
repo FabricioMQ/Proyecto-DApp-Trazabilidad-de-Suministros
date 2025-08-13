@@ -44,11 +44,9 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (isConfirmed) {
-      toast.success('Transacción confirmada');
-      onSubmit?.();
-    }
-  }, [isConfirmed]);
+    setLocalStatus(status);
+    setLocalError(error);
+  }, [status, error]);
 
   useEffect(() => {
     if (hash) {
@@ -57,82 +55,54 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
   }, [hash]);
 
   useEffect(() => {
-    setLocalStatus(status);
-    setLocalError(error);
-  }, [status, error]);
-
-  const handleSubmit = async () => {
-    if (!userAddress.trim()) {
-      toast.error('Por favor ingresa la dirección del usuario.');
-      return;
+    if (action === 'Registrar Usuario' || action === 'Actualizar Usuario') {
+      if (localStatus === 'pending') {
+        toast.info('Transacción enviada. Esperando confirmación...');
+      } else if (localStatus === 'success') {
+        toast.success('Transacción confirmada exitosamente.');
+        onSubmit?.();
+      } else if (localStatus === 'error') {
+        toast.error(formatFriendlyError(localError));
+      }
     }
+  }, [localStatus]);
 
+const handleSubmit = async () => {
+  if (!userAddress.trim()) {
+    toast.error('Por favor ingresa la dirección del usuario.');
+    return;
+  }
+
+  if ((action === 'Registrar Usuario' || action === 'Actualizar Usuario') && userType === '0') {
+    toast.error('Por favor selecciona un tipo válido.');
+    return;
+  }
+
+  try {
     if (action === 'Registrar Usuario') {
-      if (userType === '0') {
-        toast.error('Por favor selecciona un tipo válido.');
-        return;
-      }
-
-      toast.promise(
-        useRegisterUser(userAddress, userType),
-        {
-          pending: 'Registrando usuario...',
-          success: 'Transacción enviada. Esperando confirmación...',
-          error: {
-            render({ data }) {
-              return formatFriendlyError(data);
-            },
-          },
-        }
-      );
-
+      await useRegisterUser(userAddress, userType);
     } else if (action === 'Actualizar Usuario') {
-      toast.promise(
-        useUpdateUser(userAddress, userType),
-        {
-          pending: 'Actualizando usuario...',
-          success: 'Transacción enviada. Esperando confirmación...',
-          error: {
-            render({ data }) {
-              return formatFriendlyError(data);
-            },
-          },
-        }
-      );
-
+      await useUpdateUser(userAddress, userType);
     } else if (action === 'Ver Tipo de Usuario') {
-      if (!userTypeQuery) {
-        toast.error('No se pudo inicializar la consulta.');
-        return;
+      toast.info('Consultando tipo de usuario...');
+      const result = await userTypeQuery.refetch();
+      if (result.data != null) {
+        setUserTypeResult(result.data.toString());
+        toast.success('Consulta completada');
+      } else {
+        toast.info('Usuario no registrado o tipo desconocido.');
       }
-
-      toast.promise(
-        (async () => {
-          const result = await userTypeQuery.refetch();
-          if (result.data != null) {
-            setUserTypeResult(result.data.toString());
-          } else {
-            toast.info('Usuario no registrado o tipo desconocido.');
-          }
-        })(),
-        {
-          pending: 'Consultando tipo de usuario...',
-          success: 'Consulta completada',
-          error: {
-            render({ data }) {
-              return formatFriendlyError(data);
-            },
-          },
-        }
-      );
     }
-  };
+  } catch (err) {
+    toast.error(formatFriendlyError(err));
+  }
+};
 
   const tipoTexto = {
     '0': 'Ninguno',
     '1': 'Productor',
     '2': 'Transportista',
-    '3': 'Distribuidos',
+    '3': 'Distribuidor',
   };
 
   const bgColor =
@@ -175,9 +145,9 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
                 disabled={userTypeResult !== null}
               >
                 <option value='0'>Ninguno</option>
-                <option value='1'>Producto</option>
+                <option value='1'>Productor</option>
                 <option value='2'>Transportista</option>
-                <option value='3'>Distribuidos</option>
+                <option value='3'>Distribuidor</option>
               </select>
             </div>
           )}
@@ -193,28 +163,6 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
               <strong>Hash de transacción:</strong><br />
               {localHash}
             </div>
-          )}
-
-          {(action === 'Registrar Usuario' || action === 'Actualizar Usuario') && (
-            <>
-              {localStatus === 'pending' && (
-                <div className='p-3 mt-2 text-yellow-800 border border-yellow-300 rounded bg-yellow-50'>
-                  <strong>Estado:</strong> Transacción pendiente de confirmación...
-                </div>
-              )}
-
-              {localStatus === 'success' && (
-                <div className='p-3 mt-2 text-green-800 border border-green-300 rounded bg-green-50'>
-                  <strong>Estado:</strong> Transacción confirmada exitosamente.
-                </div>
-              )}
-
-              {localStatus === 'error' && (
-                <div className='p-3 mt-2 text-red-800 border border-red-300 rounded bg-red-50'>
-                  <strong>Error:</strong> {formatFriendlyError(localError)}
-                </div>
-              )}
-            </>
           )}
         </div>
       </ModalBody>
