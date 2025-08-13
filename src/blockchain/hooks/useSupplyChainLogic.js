@@ -27,8 +27,8 @@ export function useSupplyChainLogic() {
     try {
       setLocalError(null);
       await writeContract({
-        address: contracts.logicaProductos.address,
-        abi: contracts.logicaProductos.data.abi,
+        address: contracts.supplyChainLogic.address,
+        abi: contracts.supplyChainLogic.data.abi,
         functionName: 'crearProducto',
         args: [idProducto, descripcion],
       });
@@ -42,8 +42,8 @@ export function useSupplyChainLogic() {
     try {
       setLocalError(null);
       await writeContract({
-        address: contracts.logicaProductos.address,
-        abi: contracts.logicaProductos.data.abi,
+        address: contracts.supplyChainLogic.address,
+        abi: contracts.supplyChainLogic.data.abi,
         functionName: 'actualizarEstadoProducto',
         args: [idProducto, nuevoEstado],
       });
@@ -56,8 +56,8 @@ export function useSupplyChainLogic() {
     try {
       setLocalError(null);
       await writeContract({
-        address: contracts.logicaProductos.address,
-        abi: contracts.logicaProductos.data.abi,
+        address: contracts.supplyChainLogic.address,
+        abi: contracts.supplyChainLogic.data.abi,
         functionName: 'transferirProducto',
         args: [idProducto, hacia],
       });

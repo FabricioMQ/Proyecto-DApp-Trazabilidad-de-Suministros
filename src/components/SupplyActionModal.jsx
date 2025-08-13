@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from 'flowbite-react';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'flowbite-react';
 import { toast } from 'react-toastify';
 import { useSupplyChainLogic } from '../blockchain/hooks';
 import { formatFriendlyError } from '../utils/formatFriendlyError';
@@ -15,6 +9,10 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
   const [descripcion, setDescripcion] = useState('');
   const [nuevoEstado, setNuevoEstado] = useState('');
   const [destino, setDestino] = useState('');
+
+  const [localHash, setLocalHash] = useState(null);
+  const [localError, setLocalError] = useState(null);
+  const [localStatus, setLocalStatus] = useState('idle');
 
   const {
     isConfirming,
@@ -34,15 +32,33 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
       setDescripcion('');
       setNuevoEstado('');
       setDestino('');
+      setLocalHash(null);
+      setLocalError(null);
+      setLocalStatus('idle');
     }
   }, [isOpen]);
 
   useEffect(() => {
-    if (isConfirmed) {
-      toast.success('Transacción confirmada');
-      onSubmit?.();
+    setLocalStatus(status);
+    setLocalError(error);
+  }, [status, error]);
+
+  useEffect(() => {
+    if (hash) setLocalHash(hash);
+  }, [hash]);
+
+  useEffect(() => {
+    if (action === 'Registrar Producto' || action === 'Actualizar Estado' || action === 'Transferir Producto') {
+      if (localStatus === 'pending') {
+        toast.info('Transacción enviada. Esperando confirmación...');
+      } else if (localStatus === 'success') {
+        toast.success('Transacción confirmada exitosamente.');
+        onSubmit?.();
+      } else if (localStatus === 'error') {
+        toast.error(formatFriendlyError(localError));
+      }
     }
-  }, [isConfirmed]);
+  }, [localStatus]);
 
   const handleSubmit = async () => {
     if (!idProducto.trim()) {
@@ -50,62 +66,28 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
       return;
     }
 
-    if (action === 'Registrar Producto') {
-      if (!descripcion.trim()) {
-        toast.error('Por favor ingresa la descripción.');
-        return;
-      }
-
-      toast.promise(
-        useResgisterProduct(idProducto, descripcion),
-        {
-          pending: 'Registrando producto...',
-          success: 'Transacción enviada. Esperando confirmación...',
-          error: {
-            render({ data }) {
-              return formatFriendlyError(data);
-            },
-          },
+    try {
+      if (action === 'Registrar Producto') {
+        if (!descripcion.trim()) {
+          toast.error('Por favor ingresa la descripción.');
+          return;
         }
-      );
-
-    } else if (action === 'Actualizar Estado') {
-      if (!nuevoEstado.trim()) {
-        toast.error('Por favor ingresa el nuevo estado.');
-        return;
-      }
-
-      toast.promise(
-        useUpdateStateProduct(idProducto, nuevoEstado),
-        {
-          pending: 'Actualizando estado...',
-          success: 'Transacción enviada. Esperando confirmación...',
-          error: {
-            render({ data }) {
-              return formatFriendlyError(data);
-            },
-          },
+        await useResgisterProduct(idProducto, descripcion);
+      } else if (action === 'Actualizar Estado') {
+        if (!nuevoEstado.trim()) {
+          toast.error('Por favor ingresa el nuevo estado.');
+          return;
         }
-      );
-
-    } else if (action === 'Transferir Producto') {
-      if (!destino.trim()) {
-        toast.error('Por favor ingresa la dirección de destino.');
-        return;
-      }
-
-      toast.promise(
-        useTransferProduct(idProducto, destino),
-        {
-          pending: 'Transfiriendo producto...',
-          success: 'Transacción enviada. Esperando confirmación...',
-          error: {
-            render({ data }) {
-              return formatFriendlyError(data);
-            },
-          },
+        await useUpdateStateProduct(idProducto, nuevoEstado);
+      } else if (action === 'Transferir Producto') {
+        if (!destino.trim()) {
+          toast.error('Por favor ingresa la dirección de destino.');
+          return;
         }
-      );
+        await useTransferProduct(idProducto, destino);
+      }
+    } catch (err) {
+      toast.error(formatFriendlyError(err));
     }
   };
 
@@ -122,9 +104,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
       <ModalBody>
         <div className='space-y-6'>
           <div>
-            <label className='block mb-1 font-medium text-text-primary'>
-              ID del producto
-            </label>
+            <label className='block mb-1 font-medium text-text-primary'>ID del producto</label>
             <input
               type='text'
               placeholder='Ej: 001'
@@ -137,9 +117,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
 
           {action === 'Registrar Producto' && (
             <div>
-              <label className='block mb-1 font-medium text-text-primary'>
-                Descripción
-              </label>
+              <label className='block mb-1 font-medium text-text-primary'>Descripción</label>
               <input
                 type='text'
                 placeholder='Descripción del producto'
@@ -153,9 +131,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
 
           {action === 'Actualizar Estado' && (
             <div>
-              <label className='block mb-1 font-medium text-text-primary'>
-                Nuevo estado
-              </label>
+              <label className='block mb-1 font-medium text-text-primary'>Nuevo estado</label>
               <input
                 type='text'
                 placeholder='Ej: En tránsito, Entregado...'
@@ -169,9 +145,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
 
           {action === 'Transferir Producto' && (
             <div>
-              <label className='block mb-1 font-medium text-text-primary'>
-                Dirección de destino
-              </label>
+              <label className='block mb-1 font-medium text-text-primary'>Dirección de destino</label>
               <input
                 type='text'
                 placeholder='0x1234...'
@@ -183,28 +157,9 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
             </div>
           )}
 
-          {hash && (
+          {localHash && (
             <div className='p-3 mt-4 text-sm text-blue-800 break-all border border-blue-300 rounded bg-blue-50'>
-              <strong>Hash de transacción:</strong><br />
-              {hash}
-            </div>
-          )}
-
-          {status === 'pending' && (
-            <div className='p-3 mt-2 text-yellow-800 border border-yellow-300 rounded bg-yellow-50'>
-              <strong>Estado:</strong> Transacción pendiente de confirmación...
-            </div>
-          )}
-
-          {status === 'success' && (
-            <div className='p-3 mt-2 text-green-800 border border-green-300 rounded bg-green-50'>
-              <strong>Estado:</strong> Transacción confirmada exitosamente.
-            </div>
-          )}
-
-          {status === 'error' && (
-            <div className='p-3 mt-2 text-red-800 border border-red-300 rounded bg-red-50'>
-              <strong>Error:</strong> {formatFriendlyError(error)}
+              <strong>Hash de transacción:</strong><br />{localHash}
             </div>
           )}
         </div>

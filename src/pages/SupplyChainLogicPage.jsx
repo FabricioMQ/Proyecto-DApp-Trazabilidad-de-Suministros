@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { SupplyActionModal } from '../components/SupplyActionModal';
 import { useSupplyChainLogic } from '../blockchain/hooks/useSupplyChainLogic';
 // Comprobar
-export function SupplyChainLogic() {
+export function SupplyChainLogicPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('Registrar Producto');
 
@@ -19,7 +19,6 @@ export function SupplyChainLogic() {
       toast.error(error);
       return;
     }
-    toast.success('Operación completada');
   };
 
   return (
@@ -68,7 +67,7 @@ export function SupplyChainLogic() {
         useTransferProduct={useTransferProduct}
       />
 
-      <ToastContainer position='top-right' autoClose={4000} />
+      <ToastContainer position='top-right' autoClose={2000} />
     </div>
   );
 }

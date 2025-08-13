@@ -19,8 +19,8 @@ export function useProductRegistry() {
 
   function useCheckProductoExists(idProduct) {
     return useReadContract({
-      address: contracts.userRegistry.address,
-      abi: contracts.userRegistry.data.abi,
+      address: contracts.productRegistry.address,
+      abi: contracts.productRegistry.data.abi,
       functionName: 'existeProducto',
       args: [idProduct],
       enabled: !!idProduct,
@@ -28,8 +28,8 @@ export function useProductRegistry() {
   }
   function useGetProductoHolder(idProduct) {
     return useReadContract({
-      address: contracts.userRegistry.address,
-      abi: contracts.userRegistry.data.abi,
+      address: contracts.productRegistry.address,
+      abi: contracts.productRegistry.data.abi,
       functionName: 'obtenerPoseedor',
       args: [idProduct],
       enabled: !!idProduct,
@@ -37,8 +37,8 @@ export function useProductRegistry() {
   } 
   function useGetProductDescription(idProduct) {
     return useReadContract({
-      address: contracts.userRegistry.address,
-      abi: contracts.userRegistry.data.abi,
+      address: contracts.productRegistry.address,
+      abi: contracts.productRegistry.data.abi,
       functionName: 'existeProducto',
       args: [idProduct],
       enabled: !!idProduct,

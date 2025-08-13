@@ -16,7 +16,6 @@ export   function UserRegistryPage() {
       toast.error(error);
       return;
     }
-     toast.success(error);
   };
 
   return (
@@ -65,7 +64,7 @@ export   function UserRegistryPage() {
         useGetUserType={useGetUserType}
       />
 
-      <ToastContainer position='top-right' autoClose={4000} />
+          <ToastContainer position='top-right' autoClose={2000} />
     </div>
   );
 }
