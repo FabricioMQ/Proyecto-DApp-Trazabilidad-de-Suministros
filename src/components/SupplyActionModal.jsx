@@ -9,7 +9,7 @@ import {
 import { toast } from 'react-toastify';
 import { useSupplyChainLogic } from '../blockchain/hooks';
 import { formatFriendlyError } from '../utils/formatFriendlyError';
-//Import
+
 export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
   const [idProducto, setIdProducto] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -127,7 +127,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
             </label>
             <input
               type='text'
-              placeholder='Ej: PROD-001'
+              placeholder='Ej: 001'
               value={idProducto}
               onChange={(e) => setIdProducto(e.target.value)}
               className='w-full p-2 border rounded border-border bg-background text-text-primary'

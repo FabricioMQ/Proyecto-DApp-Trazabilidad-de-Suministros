@@ -3,7 +3,7 @@ import { Button } from 'flowbite-react';
 import { ToastContainer, toast } from 'react-toastify';
 import { SupplyActionModal } from '../components/SupplyActionModal';
 import { useSupplyChainLogic } from '../blockchain/hooks/useSupplyChainLogic';
-
+// Comprobar
 export function SupplyChainLogic() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('Registrar Producto');
@@ -58,7 +58,7 @@ export function SupplyChainLogic() {
         </Button>
       </div>
 
-      <ProductActionModal
+      <SupplyActionModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         action={modalAction}

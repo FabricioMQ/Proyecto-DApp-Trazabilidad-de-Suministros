@@ -10,8 +10,8 @@ export default function App() {
         <main className='container flex-grow px-4 py-6 mx-auto'>
           <Routes>
             <Route path='/auditoria' element={<AuditTrailPage />} />
-            <Route path='/usuario' element={<UserRegistryPage />} />
             <Route path='/suministro' element={<SupplyChainLogic />} />
+            <Route path='/usuario' element={<UserRegistryPage />} />
             <Route path='*' element={<UserRegistryPage />} />
           </Routes>
         </main>
