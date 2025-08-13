@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {Navbar ,Footer} from './components';
-import { UserRegistryPage ,AuditTrailPage } from './pages/index'
+import { UserRegistryPage ,AuditTrailPage, SupplyChainLogic } from './pages/index'
 
 export default function App() {
   return (
@@ -11,6 +11,7 @@ export default function App() {
           <Routes>
             <Route path='/auditoria' element={<AuditTrailPage />} />
             <Route path='/usuario' element={<UserRegistryPage />} />
+            <Route path='/suministro' element={<SupplyChainLogic />} />
             <Route path='*' element={<UserRegistryPage />} />
           </Routes>
         </main>

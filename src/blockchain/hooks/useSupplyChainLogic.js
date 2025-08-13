@@ -23,7 +23,7 @@ export function useSupplyChainLogic() {
 
   const [localError, setLocalError] = useState(null);
 
-  async function crearProducto(idProducto, descripcion) {
+  async function useResgisterProduct(idProducto, descripcion) {
     try {
       setLocalError(null);
       await writeContract({
@@ -38,7 +38,7 @@ export function useSupplyChainLogic() {
   }
 
 
-  async function actualizarEstadoProducto(idProducto, nuevoEstado) {
+  async function useUpdateStateProduct(idProducto, nuevoEstado) {
     try {
       setLocalError(null);
       await writeContract({
@@ -52,7 +52,7 @@ export function useSupplyChainLogic() {
     }
   }
 
-  async function transferirProducto(idProducto, hacia) {
+  async function useTransferProduct(idProducto, hacia) {
     try {
       setLocalError(null);
       await writeContract({
@@ -77,9 +77,9 @@ export function useSupplyChainLogic() {
     localError?.message || writeError?.message || txError?.message || null;
 
   return {
-    crearProducto,
-    actualizarEstadoProducto,
-    transferirProducto,
+    useResgisterProduct,
+    useUpdateStateProduct,
+    useTransferProduct,
     hash,
     isPending,
     isConfirming,
