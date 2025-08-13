@@ -7,9 +7,9 @@ import {
   Button,
 } from 'flowbite-react';
 import { toast } from 'react-toastify';
-import { useSupplyChainLogic } from '../hooks/useSupplyChainLogic';
+import { useSupplyChainLogic } from '../blockchain/hooks';
 import { formatFriendlyError } from '../utils/formatFriendlyError';
-
+//Import
 export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
   const [idProducto, setIdProducto] = useState('');
   const [descripcion, setDescripcion] = useState('');

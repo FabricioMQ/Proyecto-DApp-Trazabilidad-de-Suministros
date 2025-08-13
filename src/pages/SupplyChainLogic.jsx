@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Button } from 'flowbite-react';
 import { ToastContainer, toast } from 'react-toastify';
-import { ProductActionModal } from '../components/SupplyActionModal';
+import { SupplyActionModal } from '../components/SupplyActionModal';
 import { useSupplyChainLogic } from '../blockchain/hooks/useSupplyChainLogic';
 
-export function ProductRegistryPage() {
+export function SupplyChainLogic() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('Registrar Producto');
 
