@@ -130,7 +130,7 @@ export function UserActionModal({ isOpen, onClose, action, onSubmit }) {
 
   const tipoTexto = {
     '0': 'Ninguno',
-    '1': 'Producto',
+    '1': 'Productor',
     '2': 'Transportista',
     '3': 'Distribuidos',
   };

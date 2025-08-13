@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {Navbar ,Footer} from './components';
-import { UserRegistryPage ,AuditTrailPage } from './pages/index'
+import { UserRegistryPage ,AuditTrailPage, SupplyChainLogic } from './pages/index'
 
 export default function App() {
   return (
@@ -10,6 +10,7 @@ export default function App() {
         <main className='container flex-grow px-4 py-6 mx-auto'>
           <Routes>
             <Route path='/auditoria' element={<AuditTrailPage />} />
+            <Route path='/suministro' element={<SupplyChainLogic />} />
             <Route path='/usuario' element={<UserRegistryPage />} />
             <Route path='*' element={<UserRegistryPage />} />
           </Routes>
