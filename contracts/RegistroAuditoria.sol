@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 contract RegistroAuditoria {
     // Guarda la direccion de quien creo el contrato 
-    address public propietario;  
+    address private  immutable propietario;  
     // Guarda la direccion central o contrato que puede ejecutar este contrato , es por segurida
-    address public logicaCadenaSuministro;
+    address private logicaCadenaSuministro;
     //Evento para los cambios de estado de un producto y si cambia de  usuario
     event EstadoCambiado(uint indexed idProducto, string indexed estadoAnterior, string  nuevoEstado, address  quienCambia, uint indexed timestamp);
     event ProductoMovido(uint indexed idProducto,  address indexed desde, address  hacia, uint indexed timestamp);

@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 contract GestorPermisos {
     // Guarda la direccion de quien creo el contrato 
-    address public propietario;
+    address private  immutable propietario;
     // Guarda la direccion central o contrato que puede ejecutar este contrato , es por segurida
-    address public logicaCadenaSuministro;
+    address private logicaCadenaSuministro;
 
     //Mapping de los productos y quien tiene permiso sobre el en este caso guarda solo el ID 
     mapping(uint => mapping(address => bool)) private permisos;
