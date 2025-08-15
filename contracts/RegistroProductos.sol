@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 contract RegistroProductos {
     // Guarda la direccion de quien creo el contrato 
-    address public propietario;
+    address private immutable propietario;
     // Guarda la direccion central o contrato que puede ejecutar este contrato , es por segurida
-    address public logicaCadenaSuministro;
+    address private logicaCadenaSuministro;
     //estrucutra del producto
     struct Producto {
         uint id; //Id del producto

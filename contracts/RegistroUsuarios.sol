@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract RegistroUsuarios {
     // Guarda la direccion de quien creo el contrato 
-    address public propietario;
+    address private  immutable propietario;
     //enum para los tipos de usuario que se pueden registrar
     enum TipoUsuario { Ninguno, Productor, Transportista, Distribuidor }
     mapping(address => TipoUsuario) private usuarios;
