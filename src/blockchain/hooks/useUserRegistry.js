@@ -1,53 +1,87 @@
-import { useReadContract, useWriteContract, usePrepareContractWrite } from "wagmi";
-import { contracts } from "./contracts";
+import {
+  useWaitForTransactionReceipt,
+  useWriteContract,
+  useReadContract,
+} from 'wagmi';
+import { contracts } from '../contracts';
+import { useState, useMemo } from 'react';
 
 export function useUserRegistry() {
-  const { address, abi } = contracts.userRegistry;
+  const {
+    data: hash,
+    isPending,
+    writeContract,
+    error: writeError,
+  } = useWriteContract();
 
-  // Leer tipo de usuario
-  function useGetUserType(userAddress) {
+  const {
+    isLoading: isConfirming,
+    isSuccess: isConfirmed,
+    isError: isFailed,
+    error: txError,
+    status,
+  } = useWaitForTransactionReceipt({ hash });
+
+  const [localError, setLocalError] = useState(null);
+
+  async function useRegisterUser(userAddress, userType) {
+    try {
+      setLocalError(null);
+      await writeContract({
+        address: contracts.userRegistry.address,
+        abi: contracts.userRegistry.data.abi,
+        functionName: 'registrarUsuario',
+        args: [userAddress, userType],
+      });
+    } catch (err) {
+      setLocalError(err);
+    }
+  }
+
+  async function useUpdateUser(userAddress, newUserType) {
+    try {
+      setLocalError(null);
+      await writeContract({
+        address: contracts.userRegistry.address,
+        abi: contracts.userRegistry.data.abi,
+        functionName: 'actualizarTipoUsuario',
+        args: [userAddress, newUserType],
+      });
+    } catch (err) {
+      setLocalError(err);
+    }
+  }
+
+  function getUserType(userAddress) {
     return useReadContract({
-      address,
-      abi,
-      functionName: "obtenerTipoUsuario", 
+      address: contracts.userRegistry.address,
+      abi: contracts.userRegistry.data.abi,
+      functionName: 'obtenerTipoUsuario',
       args: [userAddress],
+      enabled: !!userAddress,
     });
   }
 
+  const txStatus = useMemo(() => {
+    if (isPending || isConfirming) return 'pending';
+    if (isConfirmed) return 'success';
+    if (isFailed || localError || writeError || txError) return 'error';
+    return 'idle';
+  }, [isPending, isConfirming, isConfirmed, isFailed, localError, writeError, txError]);
 
-  function useRegisterUser(userAddress, userType) {
-    // Preparar la escritura
-    const { config, error: prepareError } = usePrepareContractWrite({
-      address,
-      abi,
-      functionName: "registrarUsuario",
-      args: [userAddress, userType],
-    });
-
-    // Ejecutar la escritura
-    const { write, isLoading, isSuccess, error } = useWriteContract(config);
-
-    return { write, isLoading, isSuccess, error, prepareError };
-  }
-
-  function useUpdateUser(userAddress, newUserType) {
-    // Preparar la escritura
-    const { config, error: prepareError } = usePrepareContractWrite({
-      address,
-      abi,
-      functionName: "actualizarTipoUsuario",
-      args: [userAddress, newUserType],
-    });
-
-    // Ejecutar la escritura
-    const { write, isLoading, isSuccess, error } = useWriteContract(config);
-
-    return { write, isLoading, isSuccess, error, prepareError };
-  }
+  const errorMessage =
+    localError?.message || writeError?.message || txError?.message || null;
 
   return {
-    useGetUserType,
     useRegisterUser,
-    useUpdateUser
+    useUpdateUser,
+    getUserType,
+    hash,
+    isPending,
+    isConfirming,
+    isConfirmed,
+    isFailed,
+    status: txStatus,
+    error: errorMessage,
   };
 }

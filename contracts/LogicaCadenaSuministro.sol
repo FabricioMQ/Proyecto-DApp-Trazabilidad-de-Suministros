@@ -26,12 +26,12 @@ interface IRegistroAuditoria {
 }
 
 contract LogicaCadenaSuministro {
-    IRegistroProductos public registroProductos;
-    IRegistroUsuarios public registroUsuarios;
-    IGestorPermisos public gestorPermisos;
-    IRegistroAuditoria public registroAuditoria;
+    IRegistroProductos private  immutable registroProductos;
+    IRegistroUsuarios private  immutable registroUsuarios;
+    IGestorPermisos private  immutable gestorPermisos;
+    IRegistroAuditoria private  immutable registroAuditoria;
     // Mapping que guarda el estado de cada producto seria el 1 del producto y si su estado 
-    mapping(uint => string) public estadosProducto;
+    mapping(uint => string) private estadosProducto;
 
     //eventos para cuando se actualiza el estado de producto ,se transfiere o se crea
     event EstadoProductoActualizado(uint indexed idProducto, string nuevoEstado);

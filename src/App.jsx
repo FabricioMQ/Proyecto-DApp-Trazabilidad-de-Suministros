@@ -1,45 +1,23 @@
-import { useState } from "react";
-import { Button } from "flowbite-react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {Navbar ,Footer} from './components';
+import { UserRegistryPage ,AuditTrailPage, SupplyChainLogicPage} from './pages/index'
 
-
-function MenuDapp() {
-  const [action, setAction] = useState("");
-
+export default function App() {
   return (
-    <div className="max-w-md p-6 mx-auto mt-10 border rounded-lg shadow-md bg-background border-border">
-      <h2 className="mb-6 text-2xl font-bold text-primary">
-        Menú de Producto
-      </h2>
-
-      <div className="flex flex-col gap-4">
-        <Button
-          className="text-white bg-primary hover:bg-primary-hover"
-          onClick={() => setAction("Crear Producto")}
-        >
-          Crear Producto
-        </Button>
-
-        <Button
-          className="text-white bg-secondary hover:bg-secondary-hover"
-          onClick={() => setAction("Transferir")}
-        >
-          Transferir
-        </Button>
-
-        <Button
-          className="text-white bg-warning hover:bg-warning/80"
-          onClick={() => setAction("Estado Producto")}
-        >
-          Estado Producto
-        </Button>
+    <Router>
+      <div className='flex flex-col min-h-screen'>
+        <Navbar />
+        <main className='container flex-grow px-4 py-6 mx-auto'>
+          <Routes>
+            <Route path='/auditoria' element={<AuditTrailPage />} />
+            <Route path='/suministro' element={<SupplyChainLogicPage />} />
+            <Route path='/usuario' element={<UserRegistryPage />} />
+            <Route path='*' element={<UserRegistryPage />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      {action && (
-        <p className="mt-6 font-semibold text-primary">
-          Acción seleccionada: <span className="italic">{action}</span>
-        </p>
-      )}
-    </div>
+    </Router>
   );
 }
 
-export default MenuDapp;

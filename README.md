@@ -1,3 +1,5 @@
+<a href="https://deepwiki.com/FabricioMQ/Proyecto-Dapp"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

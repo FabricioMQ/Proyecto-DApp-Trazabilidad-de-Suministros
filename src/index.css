@@ -2,3 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Centrar el modal completo en la pantalla */
+.rainbowkit-modal-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  position: fixed !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 9999 !important; /* Asegúrate que esté sobre todo */
+}
+
+/* Ajustar el contenido del modal para no tener margenes extra */
+.rainbowkit-modal {
+  position: relative !important;
+  width: auto !important;
+  max-width: 450px !important; /* Puedes ajustar el tamaño aquí */
+  margin: 0 auto !important;
+  border-radius: 10px !important;
+}
