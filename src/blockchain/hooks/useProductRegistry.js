@@ -28,7 +28,7 @@ export function useProductRegistry() {
     return useReadContract({
       address: contracts.productRegistry.address,
       abi: contracts.productRegistry.data.abi,
-      functionName: 'existeProducto',
+      functionName: 'obtenerDescripcion',
       args: [idProduct],
       enabled: !!idProduct,
     });
