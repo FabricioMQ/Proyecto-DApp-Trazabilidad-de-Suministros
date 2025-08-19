@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { Button } from 'flowbite-react';
 import { ToastContainer, toast } from 'react-toastify';
 import {UserActionModal} from '../components';
-import { useUserRegistry } from '../blockchain/hooks/useUserRegistry';
 
 export   function UserRegistryPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('Registrar Usuario');
 
-  const { useRegisterUser, useUpdateUser, useGetUserType } = useUserRegistry();
-
+  
 
   const handleSubmit = (data, error) => {
     if (error) {
@@ -59,9 +57,6 @@ export   function UserRegistryPage() {
         onClose={() => setModalOpen(false)}
         action={modalAction}
         onSubmit={handleSubmit}
-        useRegisterUser={useRegisterUser}
-        useUpdateUser={useUpdateUser}
-        useGetUserType={useGetUserType}
       />
 
           <ToastContainer position='top-right' autoClose={2000} />

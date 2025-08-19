@@ -128,7 +128,6 @@ const handleSubmit = async () => {
               onChange={(e) => setUserAddress(e.target.value)}
               className='w-full p-2 border rounded border-border bg-background text-text-primary'
               required
-              disabled={userTypeResult !== null}
             />
           </div>
 

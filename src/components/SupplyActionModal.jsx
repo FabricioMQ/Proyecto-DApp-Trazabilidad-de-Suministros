@@ -107,7 +107,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
             <label className='block mb-1 font-medium text-text-primary'>ID del producto</label>
             <input
               type='text'
-              placeholder='Ej: 001'
+              placeholder='Ej: 1'
               value={idProducto}
               onChange={(e) => setIdProducto(e.target.value)}
               className='w-full p-2 border rounded border-border bg-background text-text-primary'
