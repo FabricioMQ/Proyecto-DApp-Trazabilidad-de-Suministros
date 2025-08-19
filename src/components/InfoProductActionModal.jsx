@@ -49,7 +49,7 @@ export function InfoProductActionModal({ isOpen, onClose, action }) {
         result = await getProductDescription.refetch();
       }
 
-      if (result?.data != null) {
+      if (result.data != null) {
         setResultOp(result.data.toString());
         toast.success('Consulta completada');
       } else {
