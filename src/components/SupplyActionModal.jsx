@@ -99,7 +99,7 @@ export function SupplyActionModal({ isOpen, onClose, action, onSubmit }) {
       : 'bg-warning hover:bg-warning/80';
 
   return (
-    <Modal show={isOpen} onClose={onClose} size='md' popup>
+    <Modal show={isOpen} onClose={onClose} size='md' popup dismissible>
       <ModalHeader>{action}</ModalHeader>
       <ModalBody>
         <div className='space-y-6'>

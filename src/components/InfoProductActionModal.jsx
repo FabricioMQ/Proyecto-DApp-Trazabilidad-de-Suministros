@@ -78,7 +78,7 @@ export function InfoProductActionModal({ isOpen, onClose, action }) {
       ? 'bg-secondary hover:bg-secondary-hover'
       : 'bg-warning hover:bg-warning/80';
   return (
-    <Modal show={isOpen} onClose={onClose} size='md' popup>
+    <Modal show={isOpen} onClose={onClose} size='md' popup dismissible>
       <ModalHeader>{action}</ModalHeader>
       <ModalBody>
         <div className='space-y-6'>
