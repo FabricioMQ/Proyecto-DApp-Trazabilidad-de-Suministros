@@ -1,4 +1,4 @@
-<a href="https://deepwiki.com/FabricioMQ/Proyecto-Dapp"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
+
 
 # React + Vite
 
