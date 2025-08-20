@@ -1,4 +1,4 @@
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FabricioMQ/Proyecto-DApp-Trazabilidad-de-Suministros)
 
 # React + Vite
 
