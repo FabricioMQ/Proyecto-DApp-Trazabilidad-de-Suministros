@@ -11,8 +11,8 @@ contract GestorPermisos {
     mapping(uint => mapping(address => bool)) private permisos;
 
     //Evento que indica que se otorgo permiso o revoco a un usuario en x producto 
-    event PermisoOtorgado(uint indexed idProducto, address indexed usuario);
-    event PermisoRevocado(uint indexed idProducto, address indexed usuario);
+    event PermisoOtorgado(uint indexed idProducto, address  usuario);
+    event PermisoRevocado(uint indexed idProducto, address  usuario);
 
      // para restringir que las funciones solo el propietario las pueda ejecutar
     modifier soloPropietario() {

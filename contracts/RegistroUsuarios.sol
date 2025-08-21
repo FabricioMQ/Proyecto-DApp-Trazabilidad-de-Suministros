@@ -8,8 +8,8 @@ contract RegistroUsuarios {
     enum TipoUsuario { Ninguno, Productor, Transportista, Distribuidor }
     mapping(address => TipoUsuario) private usuarios;
     //eventos para usuarios registrados y actualizacion de usuarios
-    event UsuarioRegistrado(address indexed usuario, TipoUsuario indexed tipo);
-    event TipoUsuarioActualizado(address indexed usuario, TipoUsuario indexed nuevoTipo);
+    event UsuarioRegistrado(address indexed usuario, TipoUsuario  tipo);
+    event TipoUsuarioActualizado(address indexed usuario, TipoUsuario  nuevoTipo);
 
     // Para restrigir las funciones y que solo el propiedario pueda ejecutarlas
     modifier soloPropietario() {
