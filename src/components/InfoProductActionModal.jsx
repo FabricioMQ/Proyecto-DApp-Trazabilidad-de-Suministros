@@ -72,9 +72,9 @@ export function InfoProductActionModal({ isOpen, onClose, action }) {
     'Descripción Producto': 'Descripción:',
   };
   const bgColor =
-    action === 'Registrar Usuario'
+    action === 'Ver Existencia'
       ? 'bg-primary hover:bg-primary-hover'
-      : action === 'Actualizar Usuario'
+      : action === 'Descripción Producto'
       ? 'bg-secondary hover:bg-secondary-hover'
       : 'bg-warning hover:bg-warning/80';
   return (
