@@ -17,8 +17,8 @@ contract RegistroProductos {
     mapping(uint => Producto) private productos;
 
     //eventos que guarda los productos creados y si el producto se actualiza 
-    event ProductoCreado(uint indexed idProducto, string indexed descripcion, address indexed poseedor);
-    event PoseedorProductoActualizado(uint indexed idProducto, address indexed nuevoPoseedor);
+    event ProductoCreado(uint indexed idProducto, string  descripcion, address  poseedor);
+    event PoseedorProductoActualizado(uint indexed idProducto, address  nuevoPoseedor);
 
     // para restringir que las funciones solo el propietario las pueda ejecutar
     modifier soloPropietario() {

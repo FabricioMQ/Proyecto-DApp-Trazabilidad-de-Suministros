@@ -21,7 +21,7 @@ interface IGestorPermisos {
 }
 
 interface IRegistroAuditoria {
-    function registrarCambioEstado(uint idProducto, string calldata estadoAnterior, string calldata nuevoEstado) external;
+    function registrarCambioEstado(uint idProducto, string calldata estadoAnterior, string calldata nuevoEstado,address quienCambia) external;
     function registrarMovimiento(uint idProducto, address desde, address hacia) external;
 }
 
@@ -35,8 +35,8 @@ contract LogicaCadenaSuministro {
 
     //eventos para cuando se actualiza el estado de producto ,se transfiere o se crea
     event EstadoProductoActualizado(uint indexed idProducto, string nuevoEstado);
-    event ProductoTransferido(uint indexed idProducto, address indexed desde, address indexed hacia);
-    event ProductoCreado(uint indexed idProducto, string descripcion, address indexed productor);
+    event ProductoTransferido(uint indexed idProducto, address  desde, address  hacia);
+    event ProductoCreado(uint indexed idProducto, string descripcion, address  productor);
 
     //Esta restriccion es para que solo la persona que tiene permiso en x producto pueda modificarlo 
     modifier soloConPermiso(uint idProducto) {
@@ -82,7 +82,7 @@ contract LogicaCadenaSuministro {
         string memory estadoAnterior = estadosProducto[idProducto];
         estadosProducto[idProducto] = nuevoEstado;
 
-        registroAuditoria.registrarCambioEstado(idProducto, estadoAnterior, nuevoEstado);
+        registroAuditoria.registrarCambioEstado(idProducto, estadoAnterior, nuevoEstado,msg.sender);
         emit EstadoProductoActualizado(idProducto, nuevoEstado);
     }
     //esta funcion es para transferir el producto la logica es de productor a transportitas y este a distribuidor 

@@ -7,8 +7,8 @@ contract RegistroAuditoria {
     // Guarda la direccion central o contrato que puede ejecutar este contrato , es por segurida
     address private logicaCadenaSuministro;
     //Evento para los cambios de estado de un producto y si cambia de  usuario
-    event EstadoCambiado(uint indexed idProducto, string indexed estadoAnterior, string  nuevoEstado, address  quienCambia, uint indexed timestamp);
-    event ProductoMovido(uint indexed idProducto,  address indexed desde, address  hacia, uint indexed timestamp);
+    event EstadoCambiado(uint indexed idProducto, string  estadoAnterior, string  nuevoEstado, address  quienCambia, uint indexed timestamp);
+    event ProductoMovido(uint indexed idProducto,  address  desde, address  hacia, uint  timestamp);
     
     // para restringir que las funciones solo el propietario las pueda ejecutar
     modifier soloPropietario() {
@@ -29,8 +29,8 @@ contract RegistroAuditoria {
         logicaCadenaSuministro = logica;
     }
     //Esta funcion ejecuta el evento estadocambiado que solo puede la logica puede ejecutarlo
-    function registrarCambioEstado(uint idProducto,string calldata estadoAnterior, string calldata nuevoEstado) external soloLogicaCadenaSuministro {
-        emit EstadoCambiado(idProducto, estadoAnterior, nuevoEstado, msg.sender, block.timestamp);
+    function registrarCambioEstado(uint idProducto,string calldata estadoAnterior, string calldata nuevoEstado,address  quienCambia) external soloLogicaCadenaSuministro {
+        emit EstadoCambiado(idProducto, estadoAnterior, nuevoEstado, quienCambia, block.timestamp);
     }
     //Esta funcion ejecuta el evento productomovido que solo logica puede ejecutarlo 
     function registrarMovimiento(uint idProducto,address desde, address hacia) external soloLogicaCadenaSuministro {
