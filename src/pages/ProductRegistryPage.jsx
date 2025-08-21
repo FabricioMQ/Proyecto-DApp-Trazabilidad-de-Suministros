@@ -12,18 +12,29 @@ export function ProductRegistryPage() {
       <h2 className='mb-6 text-2xl font-bold text-primary'>Menú Informativo Productos</h2>
 
       <div className='flex flex-col gap-4'>
+        
         <Button
           className='text-white bg-primary hover:bg-primary-hover'
+          onClick={() => {
+            setModalAction('Ver Existencia');
+            setModalOpen(true);
+          }}
+        >
+          Ver Existencia
+        </Button>
+        
+        <Button
+          className='text-white bg-secondary hover:bg-secondary-hover'
           onClick={() => {
             setModalAction('Descripción Producto');
             setModalOpen(true);
           }}
         >
-          Descripción
+          Descripción 
         </Button>
 
         <Button
-          className='text-white bg-secondary hover:bg-secondary-hover'
+          className='text-white bg-warning hover:bg-warning/80'
           onClick={() => {
             setModalAction('Ver Poseedor');
             setModalOpen(true);
@@ -32,15 +43,6 @@ export function ProductRegistryPage() {
           Ver Poseedor
         </Button>
 
-        <Button
-          className='text-white bg-warning hover:bg-warning/80'
-          onClick={() => {
-            setModalAction('Ver Existencia');
-            setModalOpen(true);
-          }}
-        >
-          Ver Existencia
-        </Button>
       </div>
 
       <InfoProductActionModal
